@@ -16,10 +16,10 @@ public class HomeController {
 
         // Check user signed or not
         if (!model.containsAttribute("flash_key")) {
-            return "redirect: /login";
+            return "redirect:/login";
         }
 
-        return "index";
+        return "index/page";
     }
 
 }
