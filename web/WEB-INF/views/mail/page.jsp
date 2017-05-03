@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -13,46 +15,56 @@
 </head>
 <body>
 
-<div class="container" style="margin-top: 44px">
-    <div class="row">
-        <div class="col-lg-3" style="padding: 0px">
+<jsp:include page="/WEB-INF/component/navbar.jsp"/>
+
+<div class="container-fluid" style="padding: 0px">
+    <div class="col-md-2">
+        <div class="row">
+
+        </div>
+        <div class="row">
             <table class="table table-bordered">
-                <tr>
-                    <th>邮箱</th>
-                    <th>邮件数量</th>
-                </tr>
                 <c:forEach items="${folders}" var="folder">
                     <tr>
-                        <td>${folder.name}</td>
-                        <td>${folder.messageCount}</td>
+                        <td><a href="/mail/${folder.name}">${folder.name}
+                            <c:if test="${folder.messageCount>0}">
+                                <span class="badge pull-right">${folder.messageCount}</span>
+                            </c:if></a></td>
                     </tr>
                 </c:forEach>
             </table>
-        </div>
-        <div class="col-lg-9" style="padding: 0px">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    heading
-                </div>
-                <%--<div class="panel-body">--%>
+         </div>
+    </div>
+    <div class="col-md-10">
+        <sf:form method="post">
+            <div class="row">
+                <input type="submit" formaction="/mail/action/read" value="标记已读 ${openedFolder.fullName}">
+            </div>
+            <div class="row">
+                <div class="panel panel-default" style="border-radius: 0px">
+                    <table class="table table-hover">
 
-                <%--</div>--%>
-                <table class="table">
-                    <c:forEach items="${openedFolder.messages}" var="message">
-                        <tr>
-                            <td>${message.subject}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <div class="panel-footer">
-                    footer
+                        <c:if test="${0 == openedFolder.messageCount}">
+                            <tr>
+                                <td class="text-center">
+                                    没有新邮件！
+                                </td>
+                            </tr>
+                        </c:if>
+                        <c:forEach items="${openedFolder.messages}" var="message">
+                            <tr>
+                                <td><input type="checkbox" id="mailNumbers[]" name="mailNumbers[]" value="${message.messageNumber}"/> ${message.subject}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                    <div class="panel-footer">
+                        footer
+                    </div>
                 </div>
             </div>
-        </div>
+        </sf:form>
     </div>
 </div>
-
-
 
 
 <jsp:include page="../../component/Bootstrap-Script.jsp"/>

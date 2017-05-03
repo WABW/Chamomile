@@ -66,6 +66,7 @@ public class MailSessionTest {
             for (Message message: inbox.getMessages()) {
 //                System.out.println(message.getContentType());
                 System.out.println(message.getSubject());
+                System.out.println(message.getMessageNumber());
 
                 if (message.getContent() instanceof Multipart) {
                     System.out.println("MIME multipart");
