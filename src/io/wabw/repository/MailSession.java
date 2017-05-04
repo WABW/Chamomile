@@ -18,7 +18,7 @@ public class MailSession {
         this.authenticator = authenticator;
         this.session = Session.getDefaultInstance(properties, authenticator);
 
-//        session.setDebug(true);
+        session.setDebug(true);
     }
 
     public Transport getTransport() throws MessagingException {

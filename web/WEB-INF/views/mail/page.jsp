@@ -37,8 +37,61 @@
     </div>
     <div class="col-md-10">
         <sf:form method="post">
-            <div class="row">
-                <input type="submit" formaction="/mail/action/read" value="标记已读 ${openedFolder.fullName}">
+            <div class="row" style="padding-bottom: 10px">
+                <div class="btn-group" role="group" style="padding-left: 11px; padding-right: 22px">
+                    <button type="submit" class="btn btn-default" formaction="/mail/action/refresh">
+                        &nbsp<span class="glyphicon glyphicon-repeat"></span>&nbsp
+                    </button>
+                </div>
+
+                <div class="btn-group" role="group" style="padding-right: 11px">
+                    <button class="btn btn-default" type="submit" formaction="/mail/action/trash">
+                        &nbsp<span class="glyphicon glyphicon-trash"></span>&nbsp
+                    </button>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            &nbsp<span class="glyphicon glyphicon-folder-open"></span>&nbsp
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <c:forEach items="${folders}" var="folderMoveTo">
+                                <li>
+                                    <button type="submit" id="moveButton_${folderMoveTo.name}" style="display: none;" formaction="/mail/action/move/${folderMoveTo.name}">Hidden Unread Button</button>
+                                    <a href="#" onclick="$('#moveButton_${folderMoveTo.name}').click();">移动至${folderMoveTo.name}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-default" type="submit" formaction="/mail/action/read">
+                        标记为已读
+                    </button>
+                    <div class="btn-group" role="group">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                更多操作
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li>
+                                    <button type="submit" id="unreadButton" style="display: none;" formaction="/mail/action/unread">Hidden Unread Button</button>
+                                    <a href="#" onclick="$('#unreadButton').click();">标记为未读</a>
+                                </li>
+                                <li>
+                                    <button type="submit" id="flagButton" style="display: none;" formaction="/mail/action/flag">Hidden Flag Button</button>
+                                    <a href="#" onclick="$('#flagButton').click();">添加旗标</a>
+                                </li>
+                                <li>
+                                    <button type="submit" id="unflagButton" style="display: none;" formaction="/mail/action/unflag">Hidden Unread Button</button>
+                                    <a href="#" onclick="$('#unflagButton').click();">移除旗标</a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="panel panel-default" style="border-radius: 0px">
@@ -51,9 +104,25 @@
                                 </td>
                             </tr>
                         </c:if>
-                        <c:forEach items="${openedFolder.messages}" var="message">
+                        <c:forEach items="${messages}" var="message">
+                            <c:set value="${message.isSet(Flag_SEEN)}" var="isSeen"></c:set>
+                            <c:set value="${message.isSet(Flag_FLAGGED)}" var="isFlagged"></c:set>
                             <tr>
-                                <td><input type="checkbox" id="mailNumbers[]" name="mailNumbers[]" value="${message.messageNumber}"/> ${message.subject}</td>
+                                <td class="${isSeen ? "" : 'text-info'}">
+                                    <input type="checkbox" id="mailNumbers[]" name="mailNumbers[]" value="${message.messageNumber}"/>
+                                    <c:if test="${isFlagged}">
+                                        <span class="glyphicon glyphicon-flag text-danger"></span>
+                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${!isSeen}">
+                                            [未读] ${message.subject}
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${message.subject}
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </td>
                             </tr>
                         </c:forEach>
                     </table>
