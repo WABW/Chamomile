@@ -27,8 +27,8 @@
                 <c:forEach items="${folders}" var="folder">
                     <tr>
                         <td><a href="/mail/${folder.name}">${folder.name}
-                            <c:if test="${folder.messageCount>0}">
-                                <span class="badge pull-right">${folder.messageCount}</span>
+                            <c:if test="${folder.unreadMessageCount > 0}">
+                                <span class="badge pull-right">${folder.unreadMessageCount}</span>
                             </c:if></a></td>
                     </tr>
                 </c:forEach>
@@ -40,17 +40,17 @@
             <div class="row" style="padding-bottom: 10px">
                 <div class="btn-group" role="group" style="padding-left: 11px; padding-right: 22px">
                     <button type="submit" class="btn btn-default" formaction="/mail/action/refresh">
-                        &nbsp<span class="glyphicon glyphicon-repeat"></span>&nbsp
+                        &nbsp;<span class="glyphicon glyphicon-repeat"></span>&nbsp;
                     </button>
                 </div>
 
                 <div class="btn-group" role="group" style="padding-right: 11px">
                     <button class="btn btn-default" type="submit" formaction="/mail/action/trash">
-                        &nbsp<span class="glyphicon glyphicon-trash"></span>&nbsp
+                        &nbsp;<span class="glyphicon glyphicon-trash"></span>&nbsp;
                     </button>
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            &nbsp<span class="glyphicon glyphicon-folder-open"></span>&nbsp
+                            &nbsp;<span class="glyphicon glyphicon-folder-open"></span>&nbsp;
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
@@ -126,8 +126,16 @@
                             </tr>
                         </c:forEach>
                     </table>
-                    <div class="panel-footer">
-                        footer
+                    <div class="panel-footer small">
+                        &nbsp;
+                        <c:if test="${openedFolder.unreadMessageCount > 0}">
+                            有 ${openedFolder.unreadMessageCount} 封邮件未读
+                            <button type="submit" id="markAllReadButton" style="display: none;" formaction="/mail/action/markAllRead">Hidden Unread Button</button>
+                            <a href="#" onclick="$('#markAllReadButton').click();">全部标记为已读</a>
+                        </c:if>
+                        <div class="pull-right">
+                            共 ${openedFolder.messageCount} 封邮件
+                        </div>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.*;
+import javax.mail.search.FlagTerm;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -150,18 +151,13 @@ public class MailController {
         return "redirect:/mail/" + URLEncoder.encode(openedFolder.getFullName(), "UTF-8");
     }
 
-    @RequestMapping(value = "/mail/action/trash", method = RequestMethod.POST)
-    public String move(@RequestParam(value = "mailNumbers[]", required = false) int[] mailNumbers) throws UnsupportedEncodingException, MessagingException {
-        if (null == mailNumbers) {
-            return "redirect:/mail/" + URLEncoder.encode(openedFolder.getFullName(), "UTF-8");
-        }
+    @RequestMapping(value = "/mail/action/markAllRead", method = RequestMethod.POST)
+    public String move() throws UnsupportedEncodingException, MessagingException {
 
-        Message[] messages = openedFolder.getMessages(mailNumbers);
-        Folder newFolder = mailSession.getStore().getFolder("已删除");
-        if (0 != messages.length && null != newFolder) {
-            openedFolder.copyMessages(messages, newFolder);
-            openedFolder.setFlags(messages, new Flags(Flags.Flag.DELETED), true);
-            openedFolder.expunge();
+
+        Message[] unreadMessages = openedFolder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+        for (Message message : unreadMessages) {
+            message.setFlag(Flags.Flag.SEEN, true);
         }
 
         return "redirect:/mail/" + URLEncoder.encode(openedFolder.getFullName(), "UTF-8");
@@ -173,6 +169,3 @@ public class MailController {
     }
 
 }
-
-
-// \Answered \Seen \Deleted \Draft \Flagged)
