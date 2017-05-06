@@ -1,3 +1,4 @@
+<%@ page import="javax.mail.internet.MimeUtility" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -24,15 +25,17 @@
         </div>
         <div class="row">
             <jsp:include page="/WEB-INF/component/folderNavTable.jsp"/>
-         </div>
+        </div>
     </div>
     <div class="col-md-10">
         <sf:form method="post">
             <div class="row" style="padding-bottom: 10px">
                 <div class="btn-group" role="group" style="padding-left: 11px; padding-right: 22px">
-                    <button type="submit" class="btn btn-default" formaction="/mail/action/refresh">
-                        &nbsp;<span class="glyphicon glyphicon-repeat"></span>&nbsp;
-                    </button>
+                    <a href="/mail/message/action/back">
+                        <div class="btn btn-default">
+                            &nbsp;<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;
+                        </div>
+                    </a>
                 </div>
 
                 <div class="btn-group" role="group" style="padding-right: 11px">
@@ -85,57 +88,56 @@
                 </div>
             </div>
             <div class="row">
-                <div class="panel panel-default" style="border-radius: 0px">
-                    <table class="table table-hover">
+                <table class="table table-responsive" cellpadding="0" role="presentation">
+                    <tr>
+                        <td>
+                            <%--<div style="width: 581px;"></div>--%>
+                            <div style="border-bottom-width: 1px; border-bottom-color: gray; border-bottom-style: solid;">
+                                <div class="h4">${message.subject}</div>
+                            </div>
+                            <div class="small">
+                                <div>
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td>${decoder.decodeText(message.from[0])}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            row 2
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                Content
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <%--<div class="panel panel-default" style="border-radius: 0px">--%>
+                    <%--<table class="table table-hover">--%>
 
-                        <c:if test="${0 == openedFolder.messageCount}">
-                            <tr>
-                                <td class="text-center">
-                                    没有新邮件！
-                                </td>
-                            </tr>
-                        </c:if>
-                        <c:forEach items="${messages}" var="message">
-                            <c:set value="${message.isSet(Flag_SEEN)}" var="isSeen"></c:set>
-                            <c:set value="${message.isSet(Flag_FLAGGED)}" var="isFlagged"></c:set>
-                            <tr>
-                                <td>
-                                    <input type="checkbox" id="mailNumbers[]" name="mailNumbers[]" value="${message.messageNumber}"/>
-                                    <c:if test="${isFlagged}">
-                                        <span class="glyphicon glyphicon-flag text-danger"></span>
-                                    </c:if>
-
-                                    <a href="/mail/action/message/${message.messageNumber}">
-                                        <c:choose>
-                                            <c:when test="${!isSeen}">
-                                                [未读] ${message.subject}
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${message.subject}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                    <div class="panel-footer small">
-                        &nbsp;
-                        <c:if test="${openedFolder.unreadMessageCount > 0}">
-                            有 ${openedFolder.unreadMessageCount} 封邮件未读
-                            <button type="submit" id="markAllReadButton" style="display: none;" formaction="/mail/action/markAllRead">Hidden Unread Button</button>
-                            <a href="#" onclick="$('#markAllReadButton').click();">全部标记为已读</a>
-                        </c:if>
-                        <div class="pull-right">
-                            共 ${openedFolder.messageCount} 封邮件
-                        </div>
-                    </div>
-                </div>
+                    <%--</table>--%>
+                    <%--<div class="panel-footer small">--%>
+                        <%--&nbsp;--%>
+                        <%--<c:if test="${openedFolder.unreadMessageCount > 0}">--%>
+                            <%--有 ${openedFolder.unreadMessageCount} 封邮件未读--%>
+                            <%--<button type="submit" id="markAllReadButton" style="display: none;" formaction="/mail/action/markAllRead">Hidden Unread Button</button>--%>
+                            <%--<a href="#" onclick="$('#markAllReadButton').click();">全部标记为已读</a>--%>
+                        <%--</c:if>--%>
+                        <%--<div class="pull-right">--%>
+                            <%--共 ${openedFolder.messageCount} 封邮件--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
         </sf:form>
     </div>
 </div>
-
 
 <jsp:include page="/WEB-INF/component/Bootstrap-Script.jsp"/>
 </body>

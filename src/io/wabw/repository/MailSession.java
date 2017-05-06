@@ -18,7 +18,7 @@ public class MailSession {
         this.authenticator = authenticator;
         this.session = Session.getDefaultInstance(properties, authenticator);
 
-        session.setDebug(true);
+//        session.setDebug(true);
     }
 
     public Transport getTransport() throws MessagingException {
@@ -29,8 +29,14 @@ public class MailSession {
     }
 
     public Store getStore() throws MessagingException {
-        Store store = session.getStore(new Provider(Provider.Type.STORE, "imap", "io.wabw.misc.mail.imap.IMAPStore", "Sun Microsystems, Inc.", "1.4.7"));
-//        Store store = session.getStore();
+        Store store = null;
+
+        if ("imap.126.com".equals(session.getProperty("mail.imap.host"))) {
+            store = session.getStore(new Provider(Provider.Type.STORE, "imap", "io.wabw.misc.mail.imap.IMAPStore", "Sun Microsystems, Inc.", "1.4.7"));
+        } else {
+            store = session.getStore();
+        }
+
         store.connect();
 
         return store;

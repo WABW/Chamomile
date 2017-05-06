@@ -4,6 +4,7 @@ import io.wabw.repository.MailSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.*;
 import javax.mail.search.FlagTerm;
@@ -22,6 +23,23 @@ public class MailController {
 
     private Folder openedFolder = null;
     private MailSession mailSession = null;
+
+    @RequestMapping(value = "/mail/action/message/{messageNumber}", method = RequestMethod.GET)
+    public String message(@PathVariable int messageNumber, RedirectAttributes model) throws MessagingException {
+        Message message = openedFolder.getMessage(messageNumber);
+        if (null == message) {
+            return "redirect:/mail/" + openedFolder.getFullName();
+        }
+
+        assert(null != mailSession);
+        assert(null != openedFolder);
+
+        model.addFlashAttribute("_" + message.hashCode(), message);
+        model.addFlashAttribute("_session", mailSession);
+        model.addFlashAttribute("_openedFolder", openedFolder);
+
+        return "redirect:/mail/message/" + message.hashCode();
+    }
 
     @RequestMapping(value = "/mail/{folderName}", method = RequestMethod.GET)
     public String mail(@PathVariable String folderName, Model model, HttpServletRequest request) throws MessagingException {
@@ -79,9 +97,6 @@ public class MailController {
         }
 
         for (Message message : openedFolder.getMessages(mailNumbers)) {
-            if (message.isSet(Flags.Flag.SEEN)) {
-                System.out.println("SEEN");
-            }
             message.setFlag(Flags.Flag.SEEN, true);
         }
 

@@ -8,26 +8,32 @@
 
     <title>Title</title>
 
-    <jsp:include page="../../component/Bootstrap-CSS.jsp"/>
+    <jsp:include page="/WEB-INF/component/Bootstrap-CSS.jsp"/>
 </head>
 
 <body>
 
 <div class="container" style="margin-top: 44px">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Heading
+    <div class="row">
+        <div class="col-md-8">
         </div>
-        <div class="panel-body">
-            <jsp:include page="form.jsp"/>
-        </div>
-        <div class="panel-footer">
-            Footer
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Heading
+                </div>
+                <div class="panel-body">
+                    <jsp:include page="form.jsp"/>
+                </div>
+                <div class="panel-footer">
+                    Footer
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 
-<jsp:include page="../../component/Bootstrap-Script.jsp"/>
+<jsp:include page="/WEB-INF/component/Bootstrap-Script.jsp"/>
 </body>
 </html>
