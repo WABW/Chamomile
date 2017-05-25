@@ -29,10 +29,18 @@
     <div class="col-md-10">
         <sf:form method="post">
             <div class="row" style="padding-bottom: 10px">
-                <div class="btn-group" role="group" style="padding-left: 11px; padding-right: 22px">
+                <div class="btn-group" role="group" style="padding-left: 11px; padding-right: 11px">
                     <button type="submit" class="btn btn-default" formaction="/mail/action/refresh">
                         &nbsp;<span class="glyphicon glyphicon-repeat"></span>&nbsp;
                     </button>
+                </div>
+
+                <div class="btn-group" role="group" style="padding-right: 11px">
+                    <a>
+                        <button class="btn btn-default">
+                            &nbsp;发邮件&nbsp;
+                        </button>
+                    </a>
                 </div>
 
                 <div class="btn-group" role="group" style="padding-right: 11px">
