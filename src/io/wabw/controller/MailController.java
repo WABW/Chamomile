@@ -149,6 +149,24 @@ public class MailController {
         return "redirect:/mail/" + URLEncoder.encode(openedFolder.getFullName(), "UTF-8");
     }
 
+    @RequestMapping(value = "/mail/action/trash", method = RequestMethod.POST)
+    public String move(@RequestParam(value = "mailNumbers[]", required = false) int[] mailNumbers) throws UnsupportedEncodingException, MessagingException {
+        if (null == mailNumbers) {
+            return "redirect:/mail/" + URLEncoder.encode(openedFolder.getFullName(), "UTF-8");
+        }
+
+        Message[] messages = openedFolder.getMessages(mailNumbers);
+        Folder newFolder = mailSession.getStore().getFolder("已删除");
+        if (0 != messages.length && null != newFolder) {
+            openedFolder.copyMessages(messages, newFolder);
+            openedFolder.setFlags(messages, new Flags(Flags.Flag.DELETED), true);
+            openedFolder.expunge();
+        }
+
+        return "redirect:/mail/" + URLEncoder.encode(openedFolder.getFullName(), "UTF-8");
+    }
+
+
     @RequestMapping(value = "/mail/action/move/{folderMoveTo}", method = RequestMethod.POST)
     public String move(@RequestParam(value = "mailNumbers[]", required = false) int[] mailNumbers, @PathVariable String folderMoveTo) throws UnsupportedEncodingException, MessagingException {
         if (null == mailNumbers) {

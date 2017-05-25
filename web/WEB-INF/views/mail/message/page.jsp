@@ -19,7 +19,7 @@
 <jsp:include page="/WEB-INF/component/navbar.jsp"/>
 
 <div class="container-fluid" style="padding: 0px">
-    <div class="col-md-2">
+    <div class="col-xs-2">
         <div class="row">
 
         </div>
@@ -27,7 +27,7 @@
             <jsp:include page="/WEB-INF/component/folderNavTable.jsp"/>
         </div>
     </div>
-    <div class="col-md-10">
+    <div class="col-xs-10">
         <sf:form method="post">
             <div class="row" style="padding-bottom: 10px">
                 <div class="btn-group" role="group" style="padding-left: 11px; padding-right: 22px">
