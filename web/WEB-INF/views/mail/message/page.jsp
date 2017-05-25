@@ -95,25 +95,20 @@
                             <div style="border-bottom-width: 1px; border-bottom-color: gray; border-bottom-style: solid;">
                                 <div class="h4">${message.subject}</div>
                             </div>
-                            <div class="small">
+                            <div class="small" style="margin-bottom: 14px">
                                 <div>
                                     <table>
                                         <tbody>
                                         <tr>
-                                            <td>${decoder.decodeText(message.from[0])}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            row 2
+                                            <td>发件人：${decoder.decodeText(message.from[0])}</td>
+                                            <td>&nbsp&nbsp发件日期：${message.sentDate.toLocaleString()}</td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             <div>
-                                Content
+                                ${content}
                             </div>
                         </td>
                     </tr>

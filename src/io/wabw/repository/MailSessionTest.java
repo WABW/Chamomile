@@ -1,5 +1,6 @@
 package io.wabw.repository;
 
+import io.wabw.misc.util.MessageUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class MailSessionTest {
 
     // Connect to IMAP is much faster than auth via SMTP!
     @Test
-    public void connect() {
+    public void connect() throws MessagingException, IOException {
         try {
             Store store = session.getStore();
             Assert.notNull(store, "Get mail store (IMAP)");
@@ -68,12 +69,7 @@ public class MailSessionTest {
                 System.out.println(message.getSubject());
                 System.out.println(message.getMessageNumber());
 
-                if (message.getContent() instanceof Multipart) {
-                    System.out.println("MIME multipart");
-                    message.writeTo(System.out);
-                } else {
-                    System.out.println(message.getContent());
-                }
+                System.out.println(MessageUtil.getText(message));
             }
 
             store.close();

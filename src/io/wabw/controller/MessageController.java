@@ -1,6 +1,7 @@
 package io.wabw.controller;
 
 import io.wabw.helper.Decoder;
+import io.wabw.misc.util.MessageUtil;
 import io.wabw.repository.MailSession;
 import org.simplejavamail.email.Email;
 import org.springframework.stereotype.Controller;
@@ -9,10 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.MessagingException;
+import javax.mail.*;
 import javax.mail.internet.MimeUtility;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -27,7 +27,7 @@ public class MessageController {
     Folder openedFolder = null;
 
     @RequestMapping(value = "/mail/message/{messageID}", method = RequestMethod.GET)
-    public String redirect(@PathVariable String messageID, Model model) throws MessagingException {
+    public String redirect(@PathVariable String messageID, Model model) throws MessagingException, IOException {
         Message newMessage = (Message) model.asMap().get("_" + messageID);
 
         if (null != newMessage) {
@@ -47,6 +47,7 @@ public class MessageController {
         model.addAttribute("openedFolder", openedFolder);
         model.addAttribute("message", message);
         model.addAttribute("decoder", new Decoder());
+        model.addAttribute("content", MessageUtil.getText(message));
 
         System.out.println(message.getFrom()[0].toString());
 
