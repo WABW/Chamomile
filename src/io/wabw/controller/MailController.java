@@ -201,4 +201,10 @@ public class MailController {
         return "redirect:/mail/" + URLEncoder.encode(openedFolder.getFullName(), "UTF-8");
     }
 
+    @RequestMapping(value = "/mail/action/send", method = RequestMethod.POST)
+    public String send() {
+        return "redirect:/mail/send/message";
+    }
+
+
 }

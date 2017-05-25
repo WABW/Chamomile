@@ -36,11 +36,9 @@
                 </div>
 
                 <div class="btn-group" role="group" style="padding-right: 11px">
-                    <a>
-                        <button class="btn btn-default">
-                            &nbsp;发邮件&nbsp;
+                    <button type="submit" class="btn btn-default" formaction="/mail/action/send">
+                        &nbsp;发邮件&nbsp;
                         </button>
-                    </a>
                 </div>
 
                 <div class="btn-group" role="group" style="padding-right: 11px">
