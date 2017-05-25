@@ -29,7 +29,7 @@ public class SendMailController {
         SendMailBySSL.SSS(emailaddress1,subject1,content1);
 
 
-        return "/mail/send/page";
+        return "redirect:/mail/INBOX";
     }
 
 //    @RequestMapping(value = "/mail/message/action/back", method = RequestMethod.GET)
